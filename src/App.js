@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import UserForm from './components/UserForm';
+// src/App.js
+import React from 'react';
+import TransactionForm from './components/TransactionForm';
 
 function App() {
-
   return (
     <div className="App">
-      <p>hi</p>
+      <TransactionForm />
     </div>
   );
 }
