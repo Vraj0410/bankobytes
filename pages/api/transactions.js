@@ -1,3 +1,4 @@
+// pages/api/transactions.js
 import { createClient } from '@supabase/supabase-js';
 
 // Supabase credentials
@@ -8,14 +9,18 @@ const supabaseAnonKey =
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default async function handler(req, res) {
+    console.log('Request method:', req.method); // Debugging the request method
+
     if (req.method === 'POST') {
         const { apiKey, userId, amount, transactionType, callbackUrl } = req.body;
 
+        // Check API key
         if (apiKey !== process.env.VALID_API_KEY) {
             return res.status(403).json({ success: false, message: 'Invalid API key.' });
         }
 
         try {
+            // Insert transaction into Supabase
             const { data, error } = await supabase
                 .from('transactions')
                 .insert({
@@ -23,10 +28,12 @@ export default async function handler(req, res) {
                     amount,
                     type: transactionType,
                     status: 'pending',
-                });
+                })
+                .select();
 
             if (error) throw error;
 
+            // Optional: Send a callback if the callback URL is provided
             if (callbackUrl) {
                 await fetch(callbackUrl, {
                     method: 'POST',
@@ -37,6 +44,7 @@ export default async function handler(req, res) {
 
             return res.status(200).json({ success: true, data });
         } catch (err) {
+            console.error('Error:', err.message);
             return res.status(500).json({ success: false, message: err.message });
         }
     } else {

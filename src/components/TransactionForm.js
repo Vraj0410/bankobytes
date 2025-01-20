@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const TransactionForm = () => {
     const [formData, setFormData] = useState({
-        apiKey: '',
+        apiKey: 'VRAJ', // Replace with your actual API key if needed
         userId: '',
         amount: '',
         transactionType: '',
@@ -20,10 +20,10 @@ const TransactionForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/transactions', formData);
+            const response = await axios.post('/api/transactions', formData); // Ensure this is a POST request
             setResponseMessage(response.data.success ? 'Transaction successful!' : response.data.message);
         } catch (err) {
-            setResponseMessage(`Error: ${err.message}`);
+            setResponseMessage(`Error: ${err.response?.data?.message || err.message}`);
         }
     };
 
