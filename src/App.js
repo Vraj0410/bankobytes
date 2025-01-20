@@ -1,10 +1,11 @@
-import React from 'react';
-import SendEmailForm from './components/SendEmailForm';
+import React, { useState } from 'react';
+import UserForm from './components/UserForm';
 
 function App() {
+
   return (
     <div className="App">
-      <SendEmailForm />
+      <UserForm />
     </div>
   );
 }
